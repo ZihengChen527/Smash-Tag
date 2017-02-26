@@ -36,13 +36,18 @@ class RecentsTableViewController: UITableViewController {
         cell.textLabel?.text = RecentsDatabase().getRecentSearch(row: indexPath.row)
         return cell
     }
-
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Search Recent Term" {
-            if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell), let destinationController = segue.destination as? TweetTableViewController {
+            if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell), let destinationController = segue.destination as? SmashTweetTableViewController {
                 destinationController.searchText = RecentsDatabase().getRecentSearch(row: indexPath.row)
+            }
+        }
+        if segue.identifier == "Show Popular" {
+            if let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell), let destinationController = segue.destination as? SmashPopularTableViewController {
+                destinationController.recentSearchText = RecentsDatabase().getRecentSearch(row: indexPath.row)
             }
         }
     }

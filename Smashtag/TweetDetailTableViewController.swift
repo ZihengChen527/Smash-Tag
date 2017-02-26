@@ -15,9 +15,9 @@ class TweetDetailTableViewController: UITableViewController {
     
     private enum TweetDetail {
         case image(MediaItem)
-        case hashtag(Mention)
-        case url(Mention)
-        case mentionedUser(Mention)
+        case hashtag(Twitter.Mention)
+        case url(Twitter.Mention)
+        case mentionedUser(Twitter.Mention)
 
         var type: String {
             switch self {
@@ -145,7 +145,9 @@ class TweetDetailTableViewController: UITableViewController {
                 case .hashtag(let mention), .mentionedUser(let mention):
                     destinationController.searchText = mention.keyword
                 case .url(let mention):
-                    UIApplication.shared.openURL(URL(string: mention.keyword)!)
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(URL(string: mention.keyword)!, options: [:], completionHandler: nil)
+                    }
                 default:
                     break
                 }

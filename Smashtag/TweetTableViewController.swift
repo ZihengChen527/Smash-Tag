@@ -44,7 +44,11 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
             tableView.reloadData()
         }
     }
-        
+    
+    func insertTweets(_ newTweets: [Twitter.Tweet]) {
+        self.tweets.insert(newTweets, at:0)
+        self.tableView.insertSections([0], with: .fade)
+    }
     
     // MARK: Updating the Table
     
@@ -75,8 +79,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
             request.fetchTweets { [weak self] newTweets in      // this is off the main queue
                 DispatchQueue.main.async {                      // so we must dispatch back to main queue
                     if request == self?.lastTwitterRequest {
-                        self?.tweets.insert(newTweets, at:0)
-                        self?.tableView.insertSections([0], with: .fade)
+                        self?.insertTweets(newTweets)
                     }
                     self?.refreshControl?.endRefreshing()   // REFRESHING
                 }
@@ -137,7 +140,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate
 
         // get the tweet that is associated with this row
         // that the table view is asking us to provide a UITableViewCell for
-        let tweet: Tweet = tweets[indexPath.section][indexPath.row]
+        let tweet: Twitter.Tweet = tweets[indexPath.section][indexPath.row]
 
         // our outlets to our custom UI
         // are connected to this custom UITableViewCell-subclassed cell
